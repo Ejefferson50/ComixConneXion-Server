@@ -2,6 +2,8 @@ package entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +24,9 @@ public class User {
     @NotNull
     @Column(name = "password")
     private String passWord;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comic> comicbooks = new ArrayList<>();
 
     public User () {}
 
@@ -55,5 +60,9 @@ public class User {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+
+    public List<Comic> getComicbooks() {
+        return comicbooks;
     }
 }

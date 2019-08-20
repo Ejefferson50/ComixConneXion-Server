@@ -1,11 +1,14 @@
 package requestModels;
 
+import entities.Comic;
+
 public class UserRequest {
 
     private Long id;
     private String username;
     private String password;
     private String email;
+    private Comic comic;
 
     public UserRequest(){
 
@@ -41,5 +44,13 @@ public class UserRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Comic getComic() {
+        return comic;
+    }
+
+    public void setComic(Comic comic) {
+        this.comic = comic;
     }
 }

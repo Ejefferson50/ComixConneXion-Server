@@ -25,19 +25,24 @@ public class UserController {
         return new ResponseEntity<>(this.userService.addUser(userRequest), HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Long userId){
-        return new ResponseEntity<>(this.userService.findUserById(userId), HttpStatus.OK);
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUser(@RequestBody UserRequest userRequest){
+        return new ResponseEntity<>(this.userService.findUserById(userRequest.getId()), HttpStatus.OK);
     }
 
-    @PutMapping("/users/{userId}")
+    @GetMapping("/users/{id}")
+    public ResponseEntity<Iterable<User>> getAllUsers(){
+        return new ResponseEntity<>(this.userService.findAllUsers(), HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserRequest userUpdateDetails, @PathVariable Long userId){
         return new ResponseEntity<>(this.userService.updateUser(userId, userUpdateDetails), HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<Void> deleteUser(Long userId){
-        this.userService.deleteUserById(userId);
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
+        this.userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 

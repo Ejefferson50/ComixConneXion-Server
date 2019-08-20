@@ -1,6 +1,6 @@
 package services;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +32,6 @@ public class UserService {
         return this.userRepo.save(user);
     }
 
-    public User findUser(UserRequest userRequest) {
-        try {
-            this.userRepo.getOne(userRequest.getId());
-        } catch (Exception e) {
-            System.out.println("User does not exist");
-        }
-        return this.userRepo.getOne(userRequest.getId());
-    }
-
     public User findUserById(Long id){
         Optional<User> user = this.userRepo.findById(id);
         if(!user.isPresent()){
@@ -50,6 +41,11 @@ public class UserService {
     }
 
     public Iterable<User> findAllUsers(){
+        try{
+            this.userRepo.findAll();
+        } catch (Exception e){
+            System.out.println("No Users Exists");
+        }
         return this.userRepo.findAll();
     }
 
@@ -62,15 +58,7 @@ public class UserService {
         return this.userRepo.save(user);
     }
 
-    public void deleteUser(UserRequest userRequest){
-        try {
-            this.userRepo.delete(this.userRepo.getOne(userRequest.getId()));
-        } catch (Exception e){
-            System.out.println("User does not exist");
-        }
-    }
-
-    public void deleteUserById(Long id){
+    public void deleteUser(Long id){
         try {
            this.userRepo.deleteById(id);
         } catch (Exception e){
