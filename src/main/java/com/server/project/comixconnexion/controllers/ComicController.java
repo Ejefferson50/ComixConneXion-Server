@@ -1,12 +1,12 @@
-package controllers;
+package com.server.project.comixconnexion.controllers;
 
-import entities.Comic;
+import com.server.project.comixconnexion.entities.Comic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import requestModels.ComicRequest;
-import services.ComicService;
+import com.server.project.comixconnexion.requestModels.ComicRequest;
+import com.server.project.comixconnexion.services.ComicService;
 
 @RestController
 public class ComicController {
@@ -16,7 +16,7 @@ public class ComicController {
     @Autowired
     public ComicController(ComicService comicService){ this.comicService = comicService; }
 
-    @PostMapping("/comics")
+    @PostMapping("/comics/add")
     public ResponseEntity<Comic> postComic(@RequestBody ComicRequest comicRequest){
         return new ResponseEntity<>(this.comicService.addComic(comicRequest), HttpStatus.CREATED);
     }
@@ -25,8 +25,8 @@ public class ComicController {
     public ResponseEntity<Comic> getComic(ComicRequest comicRequest){
         return new ResponseEntity<>(this.comicService.getComic(comicRequest), HttpStatus.OK);
     }
-    @GetMapping("/comics/{id}")
-    public ResponseEntity<Iterable<Comic>> getAllComics(ComicRequest comicRequest){
+    @GetMapping("/comics/all")
+    public ResponseEntity<Iterable<Comic>> getAllComics(){
         return new ResponseEntity<>(this.comicService.getAllComics(), HttpStatus.OK);
     }
 

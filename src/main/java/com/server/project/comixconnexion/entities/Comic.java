@@ -1,4 +1,4 @@
-package entities;
+package com.server.project.comixconnexion.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

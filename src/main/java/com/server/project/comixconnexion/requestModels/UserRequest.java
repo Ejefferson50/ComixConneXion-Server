@@ -1,6 +1,6 @@
-package requestModels;
+package com.server.project.comixconnexion.requestModels;
 
-import entities.Comic;
+import com.server.project.comixconnexion.entities.Comic;
 
 public class UserRequest {
 

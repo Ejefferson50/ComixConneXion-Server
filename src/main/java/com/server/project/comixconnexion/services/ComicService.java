@@ -1,11 +1,11 @@
-package services;
+package com.server.project.comixconnexion.services;
 
-import entities.Comic;
-import entities.User;
+import com.server.project.comixconnexion.entities.Comic;
+import com.server.project.comixconnexion.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.ComicRepository;
-import requestModels.ComicRequest;
+import com.server.project.comixconnexion.repositories.ComicRepository;
+import com.server.project.comixconnexion.requestModels.ComicRequest;
 
 import java.util.Optional;
 

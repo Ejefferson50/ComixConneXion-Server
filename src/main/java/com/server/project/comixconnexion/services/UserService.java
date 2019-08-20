@@ -1,12 +1,12 @@
-package services;
+package com.server.project.comixconnexion.services;
 
 
-import entities.User;
+import com.server.project.comixconnexion.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repositories.UserRepository;
-import requestModels.UserRequest;
+import com.server.project.comixconnexion.repositories.UserRepository;
+import com.server.project.comixconnexion.requestModels.UserRequest;
 
 import java.util.Optional;
 
