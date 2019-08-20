@@ -10,6 +10,7 @@ import requestModels.UserRequest;
 import services.UserService;
 
 @RestController
+@RequestMapping(path="/users")
 public class UserController {
 
     private UserService userService;
@@ -19,28 +20,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
+    @PostMapping(path="/add")
     public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest){
 
         return new ResponseEntity<>(this.userService.addUser(userRequest), HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping(path="/{id}")
     public ResponseEntity<User> getUser(@RequestBody UserRequest userRequest){
         return new ResponseEntity<>(this.userService.findUserById(userRequest.getId()), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping(path="/all")
     public ResponseEntity<Iterable<User>> getAllUsers(){
         return new ResponseEntity<>(this.userService.findAllUsers(), HttpStatus.OK);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping(path="/{id}")
     public ResponseEntity<User> updateUser(@RequestBody UserRequest userUpdateDetails, @PathVariable Long userId){
         return new ResponseEntity<>(this.userService.updateUser(userId, userUpdateDetails), HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping(path="/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId){
         this.userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
