@@ -22,7 +22,7 @@ public class ComicService {
     public Comic addComic(ComicRequest comicRequest){
         String publish = comicRequest.getPublisher();
         String title = comicRequest.getTitle();
-        Integer seriesNo = comicRequest.getSeriesNum();
+        int seriesNo = comicRequest.getSeriesNum();
         User owner = comicRequest.getUser();
 
         Comic comic = new Comic();
@@ -34,16 +34,16 @@ public class ComicService {
         return this.comicRepository.save(comic);
     }
 
-    public Comic getComic(ComicRequest comicRequest){
-        Optional<Comic> comic = this.comicRepository.findById(comicRequest.getId());
+    public Comic getComic(Long id){
+        Optional<Comic> comic = this.comicRepository.findById(id);
         if (!comic.isPresent()) {
             System.out.println("Comic is not in collection");
         }
         return comic.get();
     }
 
-    public Comic updateComic(ComicRequest oldInfo, ComicRequest newInfo){
-        Comic update = this.comicRepository.getOne(oldInfo.getId());
+    public Comic updateComic(Long id, ComicRequest newInfo){
+        Comic update = this.comicRepository.getOne(id);
         update.setPublisher(newInfo.getPublisher());
         update.setTitle(newInfo.getTitle());
         update.setSeriesNum(newInfo.getSeriesNum());

@@ -1,6 +1,7 @@
 package com.server.project.comixconnexion.services;
 
 
+import com.server.project.comixconnexion.entities.Comic;
 import com.server.project.comixconnexion.entities.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.server.project.comixconnexion.repositories.UserRepository;
 import com.server.project.comixconnexion.requestModels.UserRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,14 +23,14 @@ public class UserService {
     }
 
     public User addUser(UserRequest userRequest){
-        String userName = userRequest.getUserName();
+        String userName = userRequest.getUsername();
         String pw = userRequest.getPassword();
         String email = userRequest.getEmail();
 
         User user = new User();
-        user.setUserName(userName);
+        user.setUsername(userName);
         user.setEmail(email);
-        user.setPassWord(pw);
+        user.setPassword(pw);
         return this.userRepo.save(user);
     }
 
@@ -51,9 +53,9 @@ public class UserService {
 
     public User updateUser(Long id, UserRequest newUser){
         User user = this.userRepo.getOne(id);
-        user.setUserName(newUser.getUserName());
+        user.setUsername(newUser.getUsername());
         user.setEmail(newUser.getEmail());
-        user.setPassWord(newUser.getPassword());
+        user.setPassword(newUser.getPassword());
 
         return this.userRepo.save(user);
     }
@@ -65,4 +67,6 @@ public class UserService {
             System.out.println("User does not exist");
         }
     }
+
+
 }

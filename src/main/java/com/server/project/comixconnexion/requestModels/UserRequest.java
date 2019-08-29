@@ -2,13 +2,16 @@ package com.server.project.comixconnexion.requestModels;
 
 import com.server.project.comixconnexion.entities.Comic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserRequest {
 
     private Long id;
     private String username;
     private String password;
     private String email;
-    private Comic comic;
+    private List<Comic> comicbooks = new ArrayList<>();
 
     public UserRequest(){
 
@@ -22,11 +25,11 @@ public class UserRequest {
         this.id = id;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -46,11 +49,11 @@ public class UserRequest {
         this.email = email;
     }
 
-    public Comic getComic() {
-        return comic;
+    public List<Comic> getComicbooks() {
+        return comicbooks;
     }
 
-    public void setComic(Comic comic) {
-        this.comic = comic;
+    public void setComicbooks(List<Comic> comicbooks) {
+        this.comicbooks = comicbooks;
     }
 }
