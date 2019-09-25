@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import javax.activation.DataSource;
+import javax.sql.DataSource;
 
 @Configuration
 @Profile("local")
@@ -25,7 +25,7 @@ public class DataSourceConfiguration {
         hikariConfig.setJdbcUrl(URL);
         hikariConfig.setDriverClassName("com.mysql.jdbc.Driver");
 
-        return (DataSource) new HikariDataSource(hikariConfig);
+        return new HikariDataSource(hikariConfig);
 
     }
 }

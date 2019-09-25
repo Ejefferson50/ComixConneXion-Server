@@ -1,7 +1,6 @@
 package com.server.project.comixconnexion.services;
 
 import com.server.project.comixconnexion.entities.Comic;
-import com.server.project.comixconnexion.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.server.project.comixconnexion.repositories.ComicRepository;
@@ -23,13 +22,11 @@ public class ComicService {
         String publish = comicRequest.getPublisher();
         String title = comicRequest.getTitle();
         int seriesNo = comicRequest.getSeriesNum();
-        User owner = comicRequest.getUser();
 
         Comic comic = new Comic();
         comic.setPublisher(publish);
         comic.setTitle(title);
         comic.setSeriesNum(seriesNo);
-        comic.setUser(owner);
 
         return this.comicRepository.save(comic);
     }
@@ -47,7 +44,6 @@ public class ComicService {
         update.setPublisher(newInfo.getPublisher());
         update.setTitle(newInfo.getTitle());
         update.setSeriesNum(newInfo.getSeriesNum());
-        update.setUser(newInfo.getUser());
 
         return this.comicRepository.save(update);
     }

@@ -11,7 +11,6 @@ public class ComicRequest {
     private String publisher;
     private String title;
     private Integer seriesNum;
-    private User user;
 
     public ComicRequest(){}
 
@@ -47,11 +46,5 @@ public class ComicRequest {
         this.seriesNum = seriesNum;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

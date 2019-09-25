@@ -23,8 +23,6 @@ public class Comic {
     @Column(name = "series_number")
     private Integer seriesNum;
 
-    @ManyToOne
-    private User user;
 
     public Comic(){  }
 
@@ -60,11 +58,5 @@ public class Comic {
         this.seriesNum = seriesNum;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
