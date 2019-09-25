@@ -51,6 +51,19 @@ public class UserService {
         return this.userRepo.findAll();
     }
 
+    public Boolean findByUsername(String username){
+        Boolean usernameNotInUse = true;
+        Optional<User> user = this.userRepo.findByUsername(username);
+        if(!user.isPresent()){
+            usernameNotInUse = false;
+            System.out.println("Username does not exist");
+        } else{
+            usernameNotInUse = true;
+        }
+
+        return usernameNotInUse;
+    }
+
     public User updateUser(Long id, UserRequest newUser){
         User user = this.userRepo.getOne(id);
         user.setUsername(newUser.getUsername());
