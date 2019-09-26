@@ -68,21 +68,4 @@ public class UserController {
         return new ResponseEntity<>(response, response.getStatus());
     }
 
-//    @DeleteMapping("/users/{id}")
-//    public ResponseEntity<ComixHttpResponse> deleteUser(@PathVariable Long id){
-//
-//        ComixHttpResponse response = new ComixHttpResponse();
-//        try {
-//            this.userService.deleteUser(id);
-//            response.success = true;
-//        } catch(UserDoesExistException e) {
-//            response.success = false;
-//            errorMessage = "User does exist";
-//        } catch(Exception e) {
-//            LOGGER.error(e.getMessage(), e);
-//
-//        }
-//        return ResponseEntity.noContent().build();
-//    }
-
 }

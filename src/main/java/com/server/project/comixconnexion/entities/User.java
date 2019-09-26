@@ -20,7 +20,6 @@ public class User {
     private String email;
 
     @NotNull
-    @Column(name = "password")
     private String password;
 
     @OneToMany()

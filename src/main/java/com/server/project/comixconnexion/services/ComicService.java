@@ -1,6 +1,7 @@
 package com.server.project.comixconnexion.services;
 
 import com.server.project.comixconnexion.entities.Comic;
+import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.server.project.comixconnexion.repositories.ComicRepository;
@@ -48,20 +49,13 @@ public class ComicService {
         return this.comicRepository.save(update);
     }
 
-    public void deleteComic(ComicRequest comicRequest){
+    public void deleteComic(Long id) throws ComicNotFoundException {
 
-        // if exists
-            // do the work
-        // else
-            // log the fact that user id attempted x and it doesn't exist
-            // throw custom exception
-
-        try{
-            this.comicRepository.existsById(comicRequest.getId());
-        } catch (Exception e){
-            System.out.println("Can not find this comic book in your collection.");
+        if (!this.comicRepository.existsById(id)) {
+            throw new ComicNotFoundException();
+        } else {
+            this.comicRepository.deleteById(id);
         }
-        this.comicRepository.deleteById(comicRequest.getId());
     }
 
     public Iterable<Comic> getAllComics(){
