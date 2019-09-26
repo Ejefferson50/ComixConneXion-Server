@@ -4,6 +4,7 @@ package com.server.project.comixconnexion.services;
 import com.server.project.comixconnexion.entities.Comic;
 import com.server.project.comixconnexion.entities.User;
 
+import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
 import com.server.project.comixconnexion.exceptions.UserNotFoundException;
 import com.server.project.comixconnexion.repositories.ComicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,12 +85,19 @@ public class UserService {
         }
     }
 
-//    public void addComicToUser(Long userId, Long comicId) {
-//        User user = userRepo.findById(userId).get();
-//        Comic comicToAdd = comicRepository.findById(comicId).get();
-//        user.getComicbooks().add(comicToAdd);
-//        userRepo.save(user);
-//    }
+    public void addComicToUser(Long userId, Long comicId) throws UserNotFoundException, ComicNotFoundException {
+       if(!this.userRepo.existsById(userId)){
+           throw new UserNotFoundException();
+       } else if(!this.comicRepository.existsById(comicId)){
+           throw new ComicNotFoundException();
+       } else {
+           User user = this.userRepo.getOne(userId);
+           Comic comicToAdd = this.comicRepository.getOne(comicId);
+           user.getComicbooks().add(comicToAdd);
+           this.userRepo.save(user);
+       }
+
+    }
 
 
 }

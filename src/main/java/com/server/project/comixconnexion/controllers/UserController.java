@@ -1,6 +1,7 @@
 package com.server.project.comixconnexion.controllers;
 
 import com.server.project.comixconnexion.entities.User;
+import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
 import com.server.project.comixconnexion.exceptions.CxHttpResponse;
 import com.server.project.comixconnexion.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,49 @@ public class UserController {
         }
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+    @PutMapping("{userId}/comics/{comicId}")
+    public ResponseEntity<CxHttpResponse> addComicToCollection(@PathVariable Long userId, @PathVariable Long comicId){
+        CxHttpResponse res = new CxHttpResponse();
+        try{
+            this.userService.addComicToUser(userId,comicId);
+            res.setSuccess(true);
+            res.setStatus(HttpStatus.OK);
+            res.setMessage("Comic Has Successfully Been Added To User's Collection");
+        } catch (UserNotFoundException userExc){
+            res.setSuccess(false);
+            res.setStatus(HttpStatus.NOT_FOUND);
+            res.setMessage("User Not Found");
+            res.setErrors(Arrays.asList(userExc.toString()));
+        } catch (ComicNotFoundException comicExc){
+            res.setSuccess(false);
+            res.setStatus(HttpStatus.NOT_FOUND);
+            res.setMessage("Comic Book Not Found");
+            res.setErrors(Arrays.asList(comicExc.toString()));
+        }
+        return new ResponseEntity<>(res, res.getStatus());
+    }
+
+//    @GetMapping("{userId}/comics/{comicId}")
+//    public ResponseEntity<User> findComicInCollection(@PathVariable Long userId, @PathVariable Long comicId){
+//        CxHttpResponse res = new CxHttpResponse();
+//        try{
+//            this.userService.addComicToUser(userId,comicId);
+//            res.setSuccess(true);
+//            res.setStatus(HttpStatus.OK);
+//            res.setMessage("Comic Has Successfully Been Added To User's Collection");
+//        } catch (UserNotFoundException userExc){
+//            res.setSuccess(false);
+//            res.setStatus(HttpStatus.NOT_FOUND);
+//            res.setMessage("User Not Found");
+//            res.setErrors(Arrays.asList(userExc.toString()));
+//        } catch (ComicNotFoundException comicExc){
+//            res.setSuccess(false);
+//            res.setStatus(HttpStatus.NOT_FOUND);
+//            res.setMessage("Comic Book Not Found");
+//            res.setErrors(Arrays.asList(comicExc.toString()));
+//        }
+//        return new ResponseEntity<>(this.userService.findUserById(userId), res.getStatus());
+//    }
 
 }
