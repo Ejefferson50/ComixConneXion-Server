@@ -49,6 +49,13 @@ public class ComicService {
     }
 
     public void deleteComic(ComicRequest comicRequest){
+
+        // if exists
+            // do the work
+        // else
+            // log the fact that user id attempted x and it doesn't exist
+            // throw custom exception
+
         try{
             this.comicRepository.existsById(comicRequest.getId());
         } catch (Exception e){

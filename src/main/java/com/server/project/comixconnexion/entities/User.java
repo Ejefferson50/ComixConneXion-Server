@@ -14,18 +14,16 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(unique = true, name = "username")
     private String username;
 
     @NotNull
-    @Column(unique = true, name = "email")
     private String email;
 
     @NotNull
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany()
     private List<Comic> comicbooks = new ArrayList<>();
 
     public User () {}
@@ -71,5 +69,9 @@ public class User {
 
     public List<Comic> getComicbooks() {
         return comicbooks;
+    }
+
+    public void setComicbooks(List<Comic> comicbooks) {
+        this.comicbooks = comicbooks;
     }
 }
