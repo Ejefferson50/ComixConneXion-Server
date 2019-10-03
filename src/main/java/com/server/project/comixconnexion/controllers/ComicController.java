@@ -2,7 +2,7 @@ package com.server.project.comixconnexion.controllers;
 
 import com.server.project.comixconnexion.entities.Comic;
 
-import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
+import com.server.project.comixconnexion.exceptions.notfound.ComicNotFoundException;
 import com.server.project.comixconnexion.exceptions.CxHttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

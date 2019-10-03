@@ -3,16 +3,21 @@ package com.server.project.comixconnexion.services;
 
 import com.server.project.comixconnexion.entities.Comic;
 import com.server.project.comixconnexion.entities.User;
-
-import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
-import com.server.project.comixconnexion.exceptions.UserNotFoundException;
-import com.server.project.comixconnexion.repositories.ComicRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.server.project.comixconnexion.repositories.UserRepository;
 import com.server.project.comixconnexion.requestModels.UserRequest;
 
-import java.util.List;
+import com.server.project.comixconnexion.exceptions.exists.UserExists;
+import com.server.project.comixconnexion.exceptions.notfound.ComicNotFoundException;
+import com.server.project.comixconnexion.exceptions.notfound.UserNotFoundException;
+
+import com.server.project.comixconnexion.repositories.UserRepository;
+import com.server.project.comixconnexion.repositories.ComicRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+
+
 import java.util.Optional;
 
 @Service
@@ -22,36 +27,37 @@ public class UserService {
     private ComicRepository comicRepository;
 
     @Autowired
-    public UserService(UserRepository userRepo){
+    public UserService(UserRepository userRepo, ComicRepository comicRepo){
+
         this.userRepo = userRepo;
+        this.comicRepository = comicRepo;
     }
 
-    public User addUser(UserRequest userRequest){
-        String userName = userRequest.getUsername();
-        String pw = userRequest.getPassword();
-        String email = userRequest.getEmail();
-
+    public User addUser(UserRequest userRequest) throws UserExists {
         User user = new User();
-        user.setUsername(userName);
-        user.setEmail(email);
-        user.setPassword(pw);
+        if(findByUsername(userRequest.getUsername()) || findByEmail(userRequest.getEmail())){
+            throw new UserExists();
+        } else {
+            String userName = userRequest.getUsername();
+            String pw = userRequest.getPassword();
+            String email = userRequest.getEmail();
+
+            user.setUsername(userName);
+            user.setEmail(email);
+            user.setPassword(pw);
+        }
         return this.userRepo.save(user);
     }
 
-    public User findUserById(Long id){
+    public User findUserById(Long id) throws UserNotFoundException {
         Optional<User> user = this.userRepo.findById(id);
         if(!user.isPresent()){
-            System.out.println("User does not exist");
+            throw new UserNotFoundException();
         }
         return user.get();
     }
 
     public Iterable<User> findAllUsers(){
-        try{
-            this.userRepo.findAll();
-        } catch (Exception e){
-            System.out.println("No Users Exists");
-        }
         return this.userRepo.findAll();
     }
 
@@ -60,25 +66,38 @@ public class UserService {
         Optional<User> user = this.userRepo.findByUsername(username);
         if(!user.isPresent()){
             usernameNotInUse = false;
-            System.out.println("Username does not exist");
         } else{
             usernameNotInUse = true;
         }
-
         return usernameNotInUse;
     }
 
-    public User updateUser(Long id, UserRequest newUser){
-        User user = this.userRepo.getOne(id);
-        user.setUsername(newUser.getUsername());
-        user.setEmail(newUser.getEmail());
-        user.setPassword(newUser.getPassword());
+    public Boolean findByEmail(String email){
+        Boolean emailNotInUse = true;
+        Optional<User> user = this.userRepo.findByEmail(email);
+        if(!user.isPresent()){
+            emailNotInUse = false;
+        } else{
+            emailNotInUse = true;
+        }
+        return emailNotInUse;
+    }
 
-        return this.userRepo.save(user);
+    public User updateUser(Long id, UserRequest newUser) throws UserNotFoundException {
+        Optional<User> checkedUser = this.userRepo.findById(id);
+        if(!checkedUser.isPresent()) {
+            throw new UserNotFoundException();
+        } else {
+            checkedUser.get().setUsername(newUser.getUsername());
+            checkedUser.get().setEmail(newUser.getEmail());
+            checkedUser.get().setPassword(newUser.getPassword());
+        }
+        return this.userRepo.save(checkedUser.get());
     }
 
     public void deleteUser(Long id) throws UserNotFoundException {
-        if(!this.userRepo.existsById(id)) {
+        Optional<User> checkedUser = this.userRepo.findById(id);
+        if(!checkedUser.isPresent()) {
             throw new UserNotFoundException();
         } else {
             this.userRepo.deleteById(id);
@@ -86,17 +105,17 @@ public class UserService {
     }
 
     public void addComicToUser(Long userId, Long comicId) throws UserNotFoundException, ComicNotFoundException {
-       if(!this.userRepo.existsById(userId)){
+        Optional<User> checkUser = this.userRepo.findById(userId);
+        Optional<Comic> checkComic = this.comicRepository.findById(comicId);
+
+       if(!checkUser.isPresent()){
            throw new UserNotFoundException();
-       } else if(!this.comicRepository.existsById(comicId)){
+       } else if(!checkComic.isPresent()){
            throw new ComicNotFoundException();
        } else {
-           User user = this.userRepo.getOne(userId);
-           Comic comicToAdd = this.comicRepository.getOne(comicId);
-           user.getComicbooks().add(comicToAdd);
-           this.userRepo.save(user);
+           checkUser.get().getComicbooks().add(checkComic.get());
+           this.userRepo.save(checkUser.get());
        }
-
     }
 
 

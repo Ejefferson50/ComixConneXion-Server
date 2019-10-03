@@ -1,7 +1,7 @@
 package com.server.project.comixconnexion.services;
 
 import com.server.project.comixconnexion.entities.Comic;
-import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
+import com.server.project.comixconnexion.exceptions.notfound.ComicNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.server.project.comixconnexion.repositories.ComicRepository;

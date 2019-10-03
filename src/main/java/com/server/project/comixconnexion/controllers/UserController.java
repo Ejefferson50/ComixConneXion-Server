@@ -1,9 +1,10 @@
 package com.server.project.comixconnexion.controllers;
 
 import com.server.project.comixconnexion.entities.User;
-import com.server.project.comixconnexion.exceptions.ComicNotFoundException;
+import com.server.project.comixconnexion.exceptions.exists.UserExists;
+import com.server.project.comixconnexion.exceptions.notfound.ComicNotFoundException;
 import com.server.project.comixconnexion.exceptions.CxHttpResponse;
-import com.server.project.comixconnexion.exceptions.UserNotFoundException;
+import com.server.project.comixconnexion.exceptions.notfound.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,37 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<User> createUser(@RequestBody UserRequest userRequest){
-
-        return new ResponseEntity<>(this.userService.addUser(userRequest), HttpStatus.CREATED);
+    public ResponseEntity<CxHttpResponse> createUser(@RequestBody UserRequest userRequest){
+        CxHttpResponse res = new CxHttpResponse();
+        try{
+            this.userService.addUser(userRequest);
+            res.setSuccess(true);
+            res.setMessage("User Successfully Added");
+            res.setStatus(HttpStatus.CREATED);
+        } catch (UserExists e){
+            res.setSuccess(false);
+            res.setMessage("User Already Exists!");
+            res.setStatus(HttpStatus.CONFLICT);
+            res.setErrors(Arrays.asList(e.toString()));
+        }
+        return new ResponseEntity<>(res, res.getStatus());
     }
 
     @GetMapping("/{id}")
-        public ResponseEntity<User> getUserById(@PathVariable Long id){
-        return new ResponseEntity<>(this.userService.findUserById(id), HttpStatus.OK);
+        public ResponseEntity<CxHttpResponse> getUserById(@PathVariable Long id){
+        CxHttpResponse res = new CxHttpResponse();
+        try{
+            this.userService.findUserById(id);
+            res.setSuccess(true);
+            res.setMessage("User Successfully Found" + this.userService.findUserById(id));
+            res.setStatus(HttpStatus.OK);
+        } catch (UserNotFoundException e){
+            res.setSuccess(false);
+            res.setMessage("User Does Not Exist");
+            res.setStatus(HttpStatus.NOT_FOUND);
+            res.setErrors(Arrays.asList(e.toString()));
+        }
+        return new ResponseEntity<>(res, res.getStatus());
     }
 
     @GetMapping("/all")
@@ -47,26 +71,38 @@ public class UserController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<User> updateUser(@RequestBody UserRequest userUpdateDetails, @PathVariable Long id){
-        return new ResponseEntity<>(this.userService.updateUser(id, userUpdateDetails), HttpStatus.OK);
+    public ResponseEntity<CxHttpResponse> updateUser(@RequestBody UserRequest userUpdateDetails, @PathVariable Long id){
+        CxHttpResponse res = new CxHttpResponse();
+        try{
+            this.userService.updateUser(id, userUpdateDetails);
+            res.setSuccess(true);
+            res.setMessage("User Successfully Updated" + this.userService.updateUser(id, userUpdateDetails));
+            res.setStatus(HttpStatus.OK);
+        } catch (UserNotFoundException e){
+            res.setSuccess(false);
+            res.setMessage("User Does Not Exist");
+            res.setStatus(HttpStatus.NOT_FOUND);
+            res.setErrors(Arrays.asList(e.toString()));
+        }
+        return new ResponseEntity<>(res, res.getStatus());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<CxHttpResponse> deleteUser(@PathVariable Long id){
 
-        CxHttpResponse response = new CxHttpResponse();
+        CxHttpResponse res = new CxHttpResponse();
         try {
             this.userService.deleteUser(id);
-            response.setSuccess(true);
-            response.setMessage("User Successfully Removed");
-            response.setStatus(HttpStatus.OK);
+            res.setSuccess(true);
+            res.setMessage("User Successfully Removed");
+            res.setStatus(HttpStatus.OK);
         } catch (UserNotFoundException e){
-            response.setSuccess(false);
-            response.setMessage("User Does Not Exist");
-            response.setStatus(HttpStatus.NOT_FOUND);
-            response.setErrors(Arrays.asList(e.toString()));
+            res.setSuccess(false);
+            res.setMessage("User Does Not Exist");
+            res.setStatus(HttpStatus.NOT_FOUND);
+            res.setErrors(Arrays.asList(e.toString()));
         }
-        return new ResponseEntity<>(response, response.getStatus());
+        return new ResponseEntity<>(res, res.getStatus());
     }
 
     @PutMapping("{userId}/comics/{comicId}")
@@ -87,6 +123,11 @@ public class UserController {
             res.setStatus(HttpStatus.NOT_FOUND);
             res.setMessage("Comic Book Not Found");
             res.setErrors(Arrays.asList(comicExc.toString()));
+        } catch (Exception e){
+            res.setSuccess(false);
+            res.setStatus(HttpStatus.CONFLICT);
+            res.setMessage(e.getMessage());
+            res.setErrors(Arrays.asList(e.toString()));
         }
         return new ResponseEntity<>(res, res.getStatus());
     }
