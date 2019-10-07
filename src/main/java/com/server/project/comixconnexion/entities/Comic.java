@@ -17,11 +17,11 @@ public class Comic {
 
     @NotNull
     @Column(name = "series_title")
-    private String title;
+    private String seriesTitle;
 
     @NotNull
     @Column(name = "series_number")
-    private Integer seriesNum;
+    private Integer issue;
 
 
     public Comic(){  }
@@ -42,20 +42,20 @@ public class Comic {
         this.publisher = publisher;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSeriesTitle() {
+        return seriesTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSeriesTitle(String seriesTitle) {
+        this.seriesTitle = seriesTitle;
     }
 
-    public Integer getSeriesNum() {
-        return seriesNum;
+    public int getIssue() {
+        return issue;
     }
 
-    public void setSeriesNum(Integer seriesNum) {
-        this.seriesNum = seriesNum;
+    public void setIssue(int issue) {
+        this.issue = issue;
     }
 
 

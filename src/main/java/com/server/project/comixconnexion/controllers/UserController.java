@@ -26,6 +26,9 @@ public class UserController {
         this.userService = userService;
     }
 
+    // ************ User CRUD Operations *************
+
+    // Create a new User
     @PutMapping("/")
     public ResponseEntity<CxHttpResponse> createUser(@RequestBody UserRequest userRequest){
         CxHttpResponse res = new CxHttpResponse();
@@ -43,13 +46,14 @@ public class UserController {
         return new ResponseEntity<>(res, res.getStatus());
     }
 
+    // Get a User by id
     @GetMapping("/{id}")
         public ResponseEntity<CxHttpResponse> getUserById(@PathVariable Long id){
         CxHttpResponse res = new CxHttpResponse();
         try{
             this.userService.findUserById(id);
             res.setSuccess(true);
-            res.setMessage("User Successfully Found" + this.userService.findUserById(id));
+            res.setMessage("User Successfully Found");
             res.setStatus(HttpStatus.OK);
         } catch (UserNotFoundException e){
             res.setSuccess(false);
@@ -60,23 +64,20 @@ public class UserController {
         return new ResponseEntity<>(res, res.getStatus());
     }
 
+    // Get all Users
     @GetMapping("/all")
     public ResponseEntity<Iterable<User>> getAllUsers(){
         return new ResponseEntity<>(this.userService.findAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<Boolean> findUsername(@PathVariable String username){
-        return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
-    }
-
+    // Update User
     @PostMapping("/{id}")
     public ResponseEntity<CxHttpResponse> updateUser(@RequestBody UserRequest userUpdateDetails, @PathVariable Long id){
         CxHttpResponse res = new CxHttpResponse();
         try{
             this.userService.updateUser(id, userUpdateDetails);
             res.setSuccess(true);
-            res.setMessage("User Successfully Updated" + this.userService.updateUser(id, userUpdateDetails));
+            res.setMessage("User Successfully Updated");
             res.setStatus(HttpStatus.OK);
         } catch (UserNotFoundException e){
             res.setSuccess(false);
@@ -87,6 +88,7 @@ public class UserController {
         return new ResponseEntity<>(res, res.getStatus());
     }
 
+    // Delete User By User Id
     @DeleteMapping("/{id}")
     public ResponseEntity<CxHttpResponse> deleteUser(@PathVariable Long id){
 
@@ -105,6 +107,15 @@ public class UserController {
         return new ResponseEntity<>(res, res.getStatus());
     }
 
+    // ****** Extra Endpoint That Returns A Boolean If Username Already Exists
+    // Find if Username exists
+    @GetMapping("/username/{username}")
+    public ResponseEntity<Boolean> findUsername(@PathVariable String username){
+        return new ResponseEntity<>(this.userService.findByUsername(username), HttpStatus.OK);
+    }
+
+    // ****** CRUD Operations For User Owned Comic Books
+    // Add new Comic Book To User's Comic Collection
     @PutMapping("{userId}/comics/{comicId}")
     public ResponseEntity<CxHttpResponse> addComicToCollection(@PathVariable Long userId, @PathVariable Long comicId){
         CxHttpResponse res = new CxHttpResponse();

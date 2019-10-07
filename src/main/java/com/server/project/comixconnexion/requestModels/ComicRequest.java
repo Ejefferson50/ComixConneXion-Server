@@ -9,8 +9,8 @@ public class ComicRequest {
 
     private Long id;
     private String publisher;
-    private String title;
-    private Integer seriesNum;
+    private String seriesTitle;
+    private Integer issue;
 
     public ComicRequest(){}
 
@@ -30,20 +30,20 @@ public class ComicRequest {
         this.publisher = publisher;
     }
 
-    public String getTitle() {
-        return title;
+    public String getSeriesTitle() {
+        return seriesTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setSeriesTitle(String seriesTitle) {
+        this.seriesTitle = seriesTitle;
     }
 
-    public Integer getSeriesNum() {
-        return seriesNum;
+    public int getIssue() {
+        return issue;
     }
 
-    public void setSeriesNum(Integer seriesNum) {
-        this.seriesNum = seriesNum;
+    public void setIssue(int issue) {
+        this.issue = issue;
     }
 
 
